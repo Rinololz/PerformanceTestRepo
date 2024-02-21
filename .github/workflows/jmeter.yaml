@@ -1,13 +1,33 @@
-name: learn-github-actions
-run-name: ${{ github.actor }} is learning GitHub Actions
-on: [push]
+name: JMeter Tests
+
+on:
+  workflow_dispatch:  # Manually triggered
+  push:
+    branches:
+      - main
+
 jobs:
-  check-bats-version:
+  jmeter-test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        jmx_file:
+          - test-plan1.jmx
+          - test-plan2.jmx
+          # Add more JMeter test files here if needed
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+
+    - name: Run JMeter tests
+      run: |
+        wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.4.1.tgz
+        tar -xf apache-jmeter-5.4.1.tgz
+        cd apache-jmeter-5.4.1/bin
+        ./jmeter -n -t ${{ matrix.jmx_file }} -l test-results-${{ matrix.jmx_file }}.jtl
