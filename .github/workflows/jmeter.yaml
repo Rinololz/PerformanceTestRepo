@@ -1,33 +1,22 @@
-name: JMeter Tests
+name: JMeter Performance Test
 
 on:
   workflow_dispatch:  # Manually triggered
-  push:
-    branches:
-      - main
 
 jobs:
-  jmeter-test:
+  run-jmeter-test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        jmx_file:
-          - test-plan1.jmx
-          - test-plan2.jmx
-          # Add more JMeter test files here if needed
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Setup Java
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'
-
-    - name: Run JMeter tests
+    - name: Download Apache JMeter
       run: |
         wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.4.1.tgz
         tar -xf apache-jmeter-5.4.1.tgz
+
+    - name: Run JMeter test
+      run: |
         cd apache-jmeter-5.4.1/bin
-        ./jmeter -n -t ${{ matrix.jmx_file }} -l test-results-${{ matrix.jmx_file }}.jtl
+        ./jmeter -n -t path/to/your/test-plan.jmx -l test-results.jtl
