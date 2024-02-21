@@ -14,9 +14,9 @@ jobs:
     - name: Download Apache JMeter
       run: |
         wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.6.3.tgz
-        tar -xf apache-jmeter-5.4.1.tgz
+        tar -xf apache-jmeter-5.6.3.tgz
 
     - name: Run JMeter test
       run: |
-        cd apache-jmeter-5.4.1/bin
+        cd apache-jmeter-5.6.3/bin
         ./jmeter -n -t path/to/your/test-plan.jmx -l test-results.jtl
