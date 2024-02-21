@@ -17,10 +17,22 @@ jobs:
     - name: Run JMeter test
       run: |
         cd apache-jmeter-5.6.3/bin
-        ./jmeter -n -t ../../HTTP-Request-CXF.jmx -l test-results.jtl
+        ./jmeter -n -t ../../HTTP-Request-CXF.jmx -l test-results.jtl -l jmeter.log -e -o test-report
 
-    - name: Upload test results as artifact
+    - name: Upload JTL file as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: JMeter Performance Test
+        name: JMeter Test Results
         path: apache-jmeter-5.6.3/bin/test-results.jtl
+
+    - name: Upload jmeter.log file as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: JMeter Log File
+        path: apache-jmeter-5.6.3/bin/jmeter.log
+
+    - name: Upload HTML test report as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: JMeter HTML Test Report
+        path: apache-jmeter-5.6.3/bin/test-report
